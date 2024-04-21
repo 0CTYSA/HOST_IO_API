@@ -3,26 +3,18 @@ import os
 import json
 
 # Configura tu token de API aquí
-api_token = 'key'
+api_token = 'b27c1b36969d7e'
 headers = {'Authorization': f'Bearer {api_token}'}
-
-# Dominio a analizar
-domain = 'domain'
 
 # Crear la carpeta principal para los resultados si no existe
 base_path = 'resultados'
 if not os.path.exists(base_path):
     os.makedirs(base_path)
 
-# Crear una subcarpeta para el dominio específico
-domain_path = os.path.join(base_path, domain)
-if not os.path.exists(domain_path):
-    os.makedirs(domain_path)
-
 # Función para realizar las consultas a la API y guardar los resultados
 
 
-def fetch_and_save_data(endpoint, filename, params=None):
+def fetch_and_save_data(domain, endpoint, filename, params=None):
     url = f'https://host.io/api/{endpoint}/{domain}?token={api_token}'
     if params:
         url += '&' + \
@@ -41,9 +33,23 @@ def fetch_and_save_data(endpoint, filename, params=None):
             f'Error: No se pudo decodificar JSON en la respuesta de {endpoint}')
 
 
-# Ejecutar la función de consulta y guardar datos
-fetch_and_save_data('web', 'web_info')
-fetch_and_save_data('related', 'related_info')
-fetch_and_save_data('full', 'full_info')
+# Solicitar dominios desde la consola
+for i in range(5):
+    domain = input(f"Introduce el dominio {
+                   i+1} de 5 o escribe 'done' para terminar: ")
+    if domain.lower() == 'done':
+        break
 
-print(f"Datos guardados en la carpeta '{domain_path}'")
+    # Crear una subcarpeta para el dominio específico
+    domain_path = os.path.join(base_path, domain)
+    if not os.path.exists(domain_path):
+        os.makedirs(domain_path)
+
+    # Ejecutar la función de consulta y guardar datos
+    fetch_and_save_data(domain, 'web', 'web_info')
+    fetch_and_save_data(domain, 'related', 'related_info')
+    fetch_and_save_data(domain, 'full', 'full_info')
+
+    print(f"Datos guardados en la carpeta '{domain_path}'")
+
+print("Proceso completado para todos los dominios.")
