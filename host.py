@@ -2,53 +2,48 @@ import requests
 import os
 import json
 
-# Configura tu token de API
-api_token = 'tu_token_de_api'
+# Configura tu token de API aquí
+api_token = 'key'
 headers = {'Authorization': f'Bearer {api_token}'}
 
 # Dominio a analizar
-domain = 'ejemplo.com'
+domain = 'domain'
 
-# Base path para los resultados
+# Crear la carpeta principal para los resultados si no existe
 base_path = 'resultados'
+if not os.path.exists(base_path):
+    os.makedirs(base_path)
 
-# Path específico para el dominio
+# Crear una subcarpeta para el dominio específico
 domain_path = os.path.join(base_path, domain)
 if not os.path.exists(domain_path):
     os.makedirs(domain_path)
 
-# Función para realizar las consultas a la API y guardar los datos
+# Función para realizar las consultas a la API y guardar los resultados
 
 
-def fetch_and_save_data(endpoint, params, filename):
-    url = f'https://host.io/api/{endpoint}'
-    response = requests.get(url, headers=headers, params=params)
+def fetch_and_save_data(endpoint, filename, params=None):
+    url = f'https://host.io/api/{endpoint}/{domain}?token={api_token}'
+    if params:
+        url += '&' + \
+            '&'.join([f'{key}={value}' for key, value in params.items()])
+    response = requests.get(url, headers=headers)
+    try:
+        if response.status_code == 200:
+            data = response.json()
+            with open(os.path.join(domain_path, f'{filename}.json'), 'w') as file:
+                json.dump(data, file, indent=4)
+        else:
+            print(f'Error {response.status_code}: {
+                  response.text} al intentar obtener datos de {endpoint}')
+    except json.JSONDecodeError:
+        print(
+            f'Error: No se pudo decodificar JSON en la respuesta de {endpoint}')
 
-    if response.status_code == 200:
-        # Crea o sobrescribe el archivo JSON con los resultados
-        with open(os.path.join(domain_path, f'{filename}.json'), 'w') as file:
-            json.dump(response.json(), file, indent=4)
-        return response.json()
-    else:
-        # Manejo de errores
-        error = response.json().get('error', 'Error desconocido')
-        print(f'Error al obtener datos para {endpoint}: {error}')
-        return None
 
+# Ejecutar la función de consulta y guardar datos
+fetch_and_save_data('web', 'web_info')
+fetch_and_save_data('related', 'related_info')
+fetch_and_save_data('full', 'full_info')
 
-# Obtener información del DNS para extraer la IP
-dns_info = fetch_and_save_data('dns', {'domain': domain}, 'dns_info')
-
-# Si se obtuvo la información del DNS correctamente, extraer la IP y buscar co-hosted
-if dns_info and 'a' in dns_info:
-    # Asumimos la primera entrada A como la IP del dominio
-    ip_address = dns_info['a'][0]
-    fetch_and_save_data('domains/ip', {'ip': ip_address}, 'cohosted_domains')
-
-# Los demás llamados permanecen iguales
-fetch_and_save_data('web', {'domain': domain}, 'web_info')
-fetch_and_save_data('related', {'domain': domain}, 'related_info')
-fetch_and_save_data('full', {'domain': domain}, 'full_info')
-
-# Imprimir la ruta donde se guardaron los datos
 print(f"Datos guardados en la carpeta '{domain_path}'")
