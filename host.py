@@ -3,7 +3,7 @@ import os
 import json
 
 # Configura tu token de API aquí
-api_token = 'b27c1b36969d7e'
+api_token = 'key'
 headers = {'Authorization': f'Bearer {api_token}'}
 
 # Crear la carpeta principal para los resultados si no existe
