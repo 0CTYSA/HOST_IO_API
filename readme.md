@@ -1,54 +1,54 @@
-# README para el Script de Consulta y Almacenamiento de Datos de Host.io
+# README for the Host.io Data Query and Storage Script
 
-Este script de Python permite realizar consultas a la API de Host.io y guardar los resultados en archivos JSON organizados por dominios. Es útil para obtener y almacenar información detallada sobre dominios específicos mediante el uso de diferentes endpoints proporcionados por la API de Host.io.
+This Python script allows you to query the Host.io API and save the results in JSON files organized by domain. It's useful for obtaining and storing detailed information about specific domains by using different endpoints provided by the Host.io API.
 
-## Configuración Inicial
+## Initial Setup
 
-1. **Token de API**: Antes de ejecutar el script, asegúrate de tener un token válido de API de Host.io. Deberás configurar este token en la variable `api_token` dentro del script.
+1. **API Token**: Before running the script, ensure you have a valid Host.io API token. You will need to configure this token in the `api_token` variable within the script.
 
-## Requisitos
+## Requirements
 
 - Python 3
-- Biblioteca `requests`
-- Acceso a Internet para realizar llamadas a la API
+- `requests` library
+- Internet access to make API calls
 
-## Instalación de Dependencias
+## Installing Dependencies
 
-Para instalar las dependencias necesarias, ejecuta el siguiente comando:
+To install the necessary dependencies, run the following command:
 
 ```bash
 pip install requests
 ```
 
-## Estructura del Script
+## Script Structure
 
-- **Autenticación**: Utiliza un token de API para autenticar las solicitudes. El token se incluye en el header de autorización de cada solicitud.
-- **Creación de Directorios**: El script crea un directorio base llamado `resultados`, donde se almacenan los datos de cada dominio en subcarpetas individuales.
-- **Función de Consulta y Almacenamiento**: `fetch_and_save_data(domain, endpoint, filename, params=None)` realiza las solicitudes a la API y guarda los datos en archivos JSON.
+- **Authentication**: Uses an API token to authenticate requests. The token is included in the authorization header of each request.
+- **Directory Creation**: The script creates a base directory named `results`, where the data for each domain is stored in individual subfolders.
+- **Query and Storage Function**: `fetch_and_save_data(domain, endpoint, filename, params=None)` performs the API requests and saves the data in JSON files.
 
-## Uso del Script
+## Using the Script
 
-Para utilizar el script, sigue estos pasos:
+To use the script, follow these steps:
 
-1. Ejecuta el script en tu entorno Python.
-2. Introduce hasta cinco dominios cuando se soliciten en la consola. El script crea una carpeta para cada dominio y guarda los datos obtenidos de los endpoints: `web`, `related` y `full`.
-3. Puedes terminar anticipadamente la introducción de dominios escribiendo 'done'.
+1. Run the script in your Python environment.
+2. Enter up to five domains when prompted in the console. The script will create a folder for each domain and save the data retrieved from the `web`, `related`, and `full` endpoints.
+3. You can end the domain entry process early by typing 'done'.
 
-## Ejemplos de Consultas
+## Query Examples
 
-- **Consulta de Información Web**: Obtiene metadatos de la página de inicio de un dominio.
-- **Consulta de Dominios Relacionados**: Retorna información sobre dominios relacionados basados en varios criterios.
-- **Consulta Completa**: Incluye información combinada de varios endpoints para un dominio.
+- **Web Information Query**: Retrieves metadata from the homepage of a domain.
+- **Related Domains Query**: Returns information about related domains based on various criteria.
+- **Full Query**: Includes combined information from multiple endpoints for a domain.
 
-## Manejo de Errores
+## Error Handling
 
-El script maneja los siguientes tipos de errores:
+The script handles the following types of errors:
 
-- Errores de conexión o de API, reportando el código de estado HTTP.
-- Errores de decodificación JSON si la respuesta no es válida.
+- Connection or API errors, reporting the HTTP status code.
+- JSON decoding errors if the response is invalid.
 
 ## Logs
 
-El script imprime en consola los estados de las operaciones, incluyendo errores específicos relacionados con las solicitudes a la API.
+The script prints the status of operations to the console, including specific errors related to API requests.
 
-Este script es una herramienta básica y efectiva para usuarios que necesitan realizar análisis o almacenamiento masivo de información de dominios utilizando la API de Host.io. Para más detalles sobre los endpoints y los posibles parámetros, consulta la [documentación oficial de Host.io](https://host.io/docs).
+This script is a basic yet effective tool for users who need to perform bulk analysis or storage of domain information using the Host.io API. For more details on the endpoints and possible parameters, refer to the [official Host.io documentation](https://host.io/docs).
