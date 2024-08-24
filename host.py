@@ -2,16 +2,16 @@ import requests
 import os
 import json
 
-# Configura tu token de API aquí
+# Configure your API token here
 api_token = 'key'
 headers = {'Authorization': f'Bearer {api_token}'}
 
-# Crear la carpeta principal para los resultados si no existe
+# Create the main folder for the results if it does not exist
 base_path = 'resultados'
 if not os.path.exists(base_path):
     os.makedirs(base_path)
 
-# Función para realizar las consultas a la API y guardar los resultados
+# Function to perform the API queries and save the results
 
 
 def fetch_and_save_data(domain, endpoint, filename, params=None):
@@ -27,29 +27,29 @@ def fetch_and_save_data(domain, endpoint, filename, params=None):
                 json.dump(data, file, indent=4)
         else:
             print(f'Error {response.status_code}: {
-                  response.text} al intentar obtener datos de {endpoint}')
+                  response.text} when trying to obtain data from {endpoint}')
     except json.JSONDecodeError:
         print(
-            f'Error: No se pudo decodificar JSON en la respuesta de {endpoint}')
+            f'Error: JSON could not be decoded in the response from {endpoint}')
 
 
-# Solicitar dominios desde la consola
+# Request domains from the console
 for i in range(5):
-    domain = input(f"Introduce el dominio {
-                   i+1} de 5 o escribe 'done' para terminar: ")
+    domain = input(f"Enter the domain {
+                   i+1} of 5 or type 'done' to finish: ")
     if domain.lower() == 'done':
         break
 
-    # Crear una subcarpeta para el dominio específico
+    # Create a subfolder for the specific domain
     domain_path = os.path.join(base_path, domain)
     if not os.path.exists(domain_path):
         os.makedirs(domain_path)
 
-    # Ejecutar la función de consulta y guardar datos
+    # Execute query function and save data
     fetch_and_save_data(domain, 'web', 'web_info')
     fetch_and_save_data(domain, 'related', 'related_info')
     fetch_and_save_data(domain, 'full', 'full_info')
 
-    print(f"Datos guardados en la carpeta '{domain_path}'")
+    print(f"Data stored in the folder '{domain_path}'")
 
-print("Proceso completado para todos los dominios.")
+print("Process completed for all domains.")
